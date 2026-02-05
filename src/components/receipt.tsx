@@ -70,7 +70,7 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
         </div>
         
         {showPreviousBills && (
-          <div className="space-y-2">
+          <div className="space-y-3">
               <div className="border rounded-lg p-3 space-y-2">
                   {displayedPreviousBills.map((bill) => (
                       <div key={bill.id} className="flex justify-between items-center text-sm">
@@ -79,8 +79,8 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
                       </div>
                   ))}
               </div>
-              <div className="bg-gray-100 text-gray-800 rounded-lg p-2 flex justify-between items-center">
-                <span className="font-semibold">سابقہ ٹوٹل</span>
+              <div className="bg-gray-100 text-gray-800 rounded-lg p-2 flex justify-between items-center mt-2">
+                <span className="font-semibold">تو ٹل سابقہ</span>
                 <span className="font-bold text-lg">{previousTotal.toLocaleString('ur-PK')}</span>
               </div>
           </div>
@@ -104,3 +104,5 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
 Receipt.displayName = 'Receipt';
 
 export default Receipt;
+
+    
