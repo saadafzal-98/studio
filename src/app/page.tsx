@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useMemo, useRef } from 'react';
@@ -206,7 +205,7 @@ export default function Home() {
               ) : (
                 <div className="space-y-2">
                   {previousBills.map((bill) => (
-                    <div key={bill.id} className="grid grid-cols-2 items-center gap-2">
+                    <div key={bill.id} className="grid grid-cols-[1fr_1fr] items-center gap-2">
                       <Input type="date" value={bill.date} onChange={e => updateBill(bill.id, 'date', e.target.value)} className="bg-gray-100 border-none"/>
                       <div className="relative">
                         <Input dir="ltr" type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none text-center w-full"/>
@@ -220,7 +219,7 @@ export default function Home() {
               )}
               { previousTotal > 0 && (
                 <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-                  <span className="font-semibold text-sm">تو ٹل سابقہ</span>
+                  <span className="font-semibold text-sm">سابقہ ٹوٹل</span>
                   <span className="font-bold text-lg">{previousTotal.toLocaleString()}</span>
                 </div>
               )}
@@ -269,5 +268,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
