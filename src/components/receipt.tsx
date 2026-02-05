@@ -79,6 +79,10 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
                       </div>
                   ))}
               </div>
+              <div className="bg-gray-100 text-gray-800 rounded-lg p-2 flex justify-between items-center">
+                <span className="font-semibold">سابقہ ٹوٹل</span>
+                <span className="font-bold text-lg">{previousTotal.toLocaleString('ur-PK')}</span>
+              </div>
           </div>
         )}
       
