@@ -26,6 +26,8 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
     }
   };
 
+  const displayedPreviousBills = data.previousBills.filter(bill => bill.amount && Number(bill.amount) > 0);
+
   return (
     <div 
         id="receipt-preview" 
@@ -64,11 +66,27 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
 
             <div>
                 <p className="text-right mb-1 text-xs text-gray-500">سابقہ رقم</p>
-                <div className="bg-gray-100 rounded-lg p-3 text-center">
-                    {previousTotal > 0 ? (
-                        <span className="font-bold text-xl">{previousTotal.toLocaleString('ur-PK')}</span>
+                <div className="bg-gray-100 rounded-lg p-3">
+                    {displayedPreviousBills.length > 0 ? (
+                        <div className="space-y-2">
+                        {displayedPreviousBills.map((bill) => (
+                            <div key={bill.id} className="flex justify-between items-center text-sm">
+                            <span className="text-gray-500 text-xs">{formatDate(bill.date)}</span>
+                            <span className="font-semibold">{(Number(bill.amount) || 0).toLocaleString('ur-PK')}</span>
+                            </div>
+                        ))}
+                        {displayedPreviousBills.length > 1 && (
+                            <>
+                                <Separator className="my-2 bg-gray-200" />
+                                <div className="flex justify-between items-center font-bold text-base">
+                                    <span>سابقہ ٹوٹل</span>
+                                    <span>{previousTotal.toLocaleString('ur-PK')}</span>
+                                </div>
+                            </>
+                        )}
+                        </div>
                     ) : (
-                        <p className="text-gray-400 text-xs">No previous balance</p>
+                        <p className="text-gray-400 text-sm text-center py-3">کوئی بقایا جات نہیں</p>
                     )}
                 </div>
             </div>
