@@ -135,12 +135,9 @@ export default function Home() {
       <main className="bg-gray-50 text-black rounded-t-3xl pt-6 pb-32">
         <div className="container mx-auto max-w-sm px-4 space-y-4">
           
-          <div className="relative text-center mb-6">
+          <div className="text-center mb-6">
             <h1 className="text-2xl font-bold">افضل پولٹری شاپ</h1>
             <p className="text-sm text-gray-500">رسید</p>
-            <Button variant="outline" size="icon" className="absolute top-0 right-0 rounded-xl h-12 w-12 bg-orange-100 border-orange-200 text-orange-500 hover:bg-orange-200 hover:text-orange-600">
-                <Bell className="h-6 w-6" />
-            </Button>
           </div>
 
           <Card className="shadow-md rounded-2xl border-none">
@@ -179,7 +176,7 @@ export default function Home() {
                {itemTotal > 0 && (
                  <div className="bg-gray-100 text-gray-800 rounded-lg p-3 flex justify-between items-center">
                     <span className="font-semibold text-sm">رقم</span>
-                    <span className="font-bold text-lg">{itemTotal.toLocaleString()}</span>
+                    <span className="font-bold text-lg">{Math.round(itemTotal).toLocaleString()}</span>
                  </div>
                )}
             </CardContent>
