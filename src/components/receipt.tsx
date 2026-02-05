@@ -63,15 +63,15 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
                 <span className="font-semibold text-gray-900">{(Number(data.rate) || 0).toLocaleString('ur-PK')}</span>
             </div>
              <Separator className="bg-gray-200"/>
-            <div className="bg-orange-500 text-white rounded-lg p-2 flex justify-between items-center mt-2">
-                <span className="font-semibold"> (ٹوٹل)</span>
+            <div className="bg-orange-100 text-orange-800 rounded-lg p-2 flex justify-between items-center mt-2">
+                <span className="font-semibold">رقم</span>
                 <span className="font-bold text-lg">{itemTotal.toLocaleString('ur-PK')}</span>
             </div>
         </div>
         
-        <div className="space-y-2">
-            <p className="text-right text-sm font-bold text-gray-500">سابقہ رقم</p>
-            {showPreviousBills ? (
+        {showPreviousBills && (
+          <div className="space-y-2">
+              <p className="text-right text-sm font-bold text-gray-500">سابقہ رقم</p>
               <div className="border rounded-lg p-3 space-y-2">
                   {displayedPreviousBills.map((bill) => (
                       <div key={bill.id} className="flex justify-between items-center text-sm">
@@ -89,12 +89,8 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
                       </>
                   )}
               </div>
-            ) : (
-                <div className="text-center text-gray-400 text-sm py-4 border rounded-lg">
-                  <p>No previous balance</p>
-                </div>
-            )}
-        </div>
+          </div>
+        )}
       
         <div className="bg-slate-800 rounded-xl p-4 text-center text-white mt-4">
             <p className="font-bold text-md text-orange-400">ٹوٹل بل</p>
