@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useRef } from 'react';
 import html2canvas from 'html2canvas';
+import { Share } from '@capacitor/share';
+import { Capacitor } from '@capacitor/core';
 import { Plus, Trash2, Share2, ReceiptText, Bell, CheckCircle, Info, Calendar, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -61,10 +63,18 @@ export default function Home() {
           backgroundColor: '#0d1a2a'
         });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-        const blob = await (await fetch(dataUrl)).blob();
-        const file = new File([blob], 'receipt.jpg', { type: 'image/jpeg' });
+        
+        if (Capacitor.isNativePlatform()) {
+            await Share.share({
+                title: 'پولٹری کی رسید',
+                text: `تاریخ ${date} کی رسید`,
+                url: dataUrl,
+                dialogTitle: 'رسید شیئر کریں',
+            });
+        } else if (navigator.share) {
+            const blob = await (await fetch(dataUrl)).blob();
+            const file = new File([blob], 'receipt.jpg', { type: 'image/jpeg' });
 
-        if (navigator.share) {
             await navigator.share({
                 files: [file],
                 title: 'پولٹری کی رسید',
@@ -74,10 +84,14 @@ export default function Home() {
              toast({
                 variant: "destructive",
                 title: "شیئرنگ ممکن نہیں",
-                description: "آپ کا براؤزر شیئرنگ کو سپورٹ نہیں کرتا۔",
+                description: "آپ کا آلہ شیئرنگ کو سپورٹ نہیں کرتا۔",
             });
         }
-    } catch (error) {
+    } catch (error: any) {
+        if (error.name === 'AbortError') {
+            console.log("Sharing cancelled by user.");
+            return;
+        }
         console.error("Sharing error:", error);
         toast({
             variant: "destructive",
@@ -150,11 +164,11 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label htmlFor="weight" className="text-xs text-gray-500 text-right w-full block">وزن (کلو)</Label>
-                  <Input id="weight" type="number" value={weight} onChange={e => setWeight(e.target.value === '' ? '' : parseFloat(e.target.value))} step="0.01" className="bg-gray-100 border-none text-center p-2 h-auto text-base font-semibold"/>
+                  <Input dir="ltr" id="weight" type="number" value={weight} onChange={e => setWeight(e.target.value === '' ? '' : parseFloat(e.target.value))} step="0.01" className="bg-gray-100 border-none text-center p-2 h-auto text-base font-semibold"/>
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="rate" className="text-xs text-gray-500 text-right w-full block">ریٹ / کلو</Label>
-                  <Input id="rate" type="number" value={rate} onChange={e => setRate(e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none text-center p-2 h-auto text-base font-semibold"/>
+                  <Input dir="ltr" id="rate" type="number" value={rate} onChange={e => setRate(e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none text-center p-2 h-auto text-base font-semibold"/>
                 </div>
               </div>
                <div className="bg-orange-100 text-orange-600 rounded-lg p-3 flex justify-between items-center">
@@ -186,7 +200,7 @@ export default function Home() {
                   {previousBills.map((bill) => (
                     <div key={bill.id} className="flex items-center gap-2">
                       <Input type="date" value={bill.date} onChange={e => updateBill(bill.id, 'date', e.target.value)} className="bg-gray-100 border-none w-1/3"/>
-                      <Input type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none flex-grow text-right"/>
+                      <Input dir="ltr" type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none flex-grow text-center"/>
                       <Button variant="ghost" size="icon" onClick={() => removeBill(bill.id)} className="text-destructive h-8 w-8">
                         <Trash2 className="h-4 w-4"/>
                       </Button>
@@ -222,7 +236,7 @@ export default function Home() {
             <DialogTitle>رسید کا پیش نظارہ</DialogTitle>
           </DialogHeader>
           <Receipt data={receiptData} ref={receiptRef}/>
-          <DialogFooter className="px-6 pb-4 pt-0 sm:justify-center bg-[#0d1a2a]">
+          <DialogFooter className="px-6 pb-4 pt-0 sm:justify-center bg-[#070e17]">
             <Button onClick={handleGenerateAndShare} className="w-full h-12 text-lg bg-green-500 hover:bg-green-600 text-white">
               <Share2 className="ml-2"/>
               شیئر کریں

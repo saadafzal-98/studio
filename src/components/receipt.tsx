@@ -32,77 +32,67 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
     <div 
         id="receipt-preview" 
         ref={ref} 
-        className="bg-white text-black font-body w-full max-w-sm mx-auto rounded-t-3xl overflow-hidden"
+        className="bg-[#0d1a2a] text-gray-200 font-body w-full max-w-sm mx-auto rounded-t-3xl overflow-hidden"
         dir="rtl"
     >
-      <div className="p-5">
-        <div className="text-center mb-4">
-          <h2 className="text-3xl font-bold">میاں ریسٹورنٹ</h2>
-          <div className="inline-block bg-orange-100 text-orange-800 rounded-full px-4 py-1 my-3 text-xs font-semibold">
+      <div className="p-6 space-y-6">
+        <div className="text-center">
+          <p className="text-sm text-green-400">وَاللَّهُ خَيْرُ الرَّازِقِينَ</p>
+          <h2 className="text-4xl font-bold text-white mt-1">افضل پولٹری شاپ</h2>
+          <div className="inline-block border border-orange-400/50 text-orange-400 rounded-full px-4 py-1 mt-3 text-sm font-semibold">
               {formatDate(data.date)}
           </div>
-          <p className="text-green-600 text-base">وَاللَّهُ خَيْرُ الرَّازِقِينَ</p>
-          <div className="mt-2 text-2xl flex justify-center items-center gap-3">
-              <span>🍗</span><span>🍷</span><span>🍽️</span><span>🐔</span><span>🥣</span>
+        </div>
+
+        <div className="bg-[#1f2d3d]/70 rounded-2xl p-4 space-y-4">
+            <div className="flex justify-between items-baseline">
+                <span className="text-gray-400">چکن وزن (کلو)</span>
+                <span className="font-bold text-xl text-white">{(Number(data.weight) || 0).toLocaleString('ur-PK')}</span>
+            </div>
+             <Separator className="bg-gray-700"/>
+            <div className="flex justify-between items-baseline">
+                <span className="text-gray-400">ریٹ لسٹ</span>
+                <span className="font-bold text-xl text-white">{(Number(data.rate) || 0).toLocaleString('ur-PK')}</span>
+            </div>
+            <div className="bg-orange-500/10 border border-orange-500/30 text-white rounded-lg p-3 flex justify-between items-center mt-3">
+                <span className="font-semibold text-orange-400">موجوده ٹوٹل</span>
+                <span className="font-bold text-2xl">Rs {itemTotal.toLocaleString('ur-PK')}</span>
+            </div>
+        </div>
+
+        {displayedPreviousBills.length > 0 && (
+          <div className="space-y-3">
+              <p className="text-right text-base font-bold text-gray-300">سابقہ رقم</p>
+              <div className="bg-[#1f2d3d]/70 rounded-2xl p-4 space-y-3">
+                  {displayedPreviousBills.map((bill) => (
+                      <div key={bill.id} className="flex justify-between items-center text-base">
+                      <span className="text-gray-500 text-sm">{formatDate(bill.date)}</span>
+                      <span className="font-semibold text-gray-300">{(Number(bill.amount) || 0).toLocaleString('ur-PK')}</span>
+                      </div>
+                  ))}
+                  {displayedPreviousBills.length > 1 && (
+                      <>
+                          <Separator className="my-2 bg-gray-700" />
+                          <div className="flex justify-between items-center font-bold text-lg text-white">
+                              <span>سابقہ ٹوٹل</span>
+                              <span>{previousTotal.toLocaleString('ur-PK')}</span>
+                          </div>
+                      </>
+                  )}
+              </div>
           </div>
-        </div>
-
-        <div className="space-y-4 text-sm">
-            <div className="bg-gray-100 rounded-xl p-3 space-y-3">
-                <div className="flex justify-between items-center">
-                    <span className="text-gray-600">چکن وزن</span>
-                    <span className="font-bold text-base">{(Number(data.weight) || 0).toLocaleString('ur-PK')}</span>
-                </div>
-                 <Separator className="bg-gray-200 my-2"/>
-                <div className="flex justify-between items-center">
-                    <span className="text-gray-600">ریٹ لسٹ</span>
-                    <span className="font-bold text-base">{(Number(data.rate) || 0).toLocaleString('ur-PK')}</span>
-                </div>
-                <div className="bg-orange-500 text-white rounded-lg p-2 flex justify-between items-center mt-3">
-                    <span className="font-semibold text-xs">(ٹوٹل)</span>
-                    <span className="font-bold text-base">{itemTotal.toLocaleString('ur-PK')}</span>
-                </div>
-            </div>
-
-            <div>
-                <p className="text-right mb-1 text-xs text-gray-500">سابقہ رقم</p>
-                <div className="bg-gray-100 rounded-lg p-3">
-                    {displayedPreviousBills.length > 0 ? (
-                        <div className="space-y-2">
-                        {displayedPreviousBills.map((bill) => (
-                            <div key={bill.id} className="flex justify-between items-center text-sm">
-                            <span className="text-gray-500 text-xs">{formatDate(bill.date)}</span>
-                            <span className="font-semibold">{(Number(bill.amount) || 0).toLocaleString('ur-PK')}</span>
-                            </div>
-                        ))}
-                        {displayedPreviousBills.length > 1 && (
-                            <>
-                                <Separator className="my-2 bg-gray-200" />
-                                <div className="flex justify-between items-center font-bold text-base">
-                                    <span>سابقہ ٹوٹل</span>
-                                    <span>{previousTotal.toLocaleString('ur-PK')}</span>
-                                </div>
-                            </>
-                        )}
-                        </div>
-                    ) : (
-                        <p className="text-gray-400 text-sm text-center py-3">کوئی بقایا جات نہیں</p>
-                    )}
-                </div>
-            </div>
-        </div>
+        )}
       </div>
       
-      <div className="bg-[#0d1a2a] text-white p-5">
-        <div className="bg-[#1f2d3d] rounded-2xl p-4 text-center">
-            <p className="text-orange-400 font-bold text-sm">ٹوٹل بل</p>
-            <p className="text-4xl font-bold mt-1">{finalTotal.toLocaleString('ur-PK')}</p>
+      <div className="bg-[#070e17] px-6 py-8">
+        <div className="bg-[#1f2d3d] rounded-2xl p-5 text-center">
+            <p className="text-orange-400 font-bold text-lg">ٹوٹل بل</p>
+            <p className="text-5xl font-bold mt-2 text-white">{finalTotal.toLocaleString('ur-PK')}</p>
         </div>
 
-        <div className="text-center mt-6">
-            <p className="text-green-400 font-bold text-lg">افضل پولٹری شاپ</p>
-            <p className="text-gray-500 mt-2 text-xs">PK</p>
-            <p className="text-2xl font-bold">محمد على</p>
+        <div className="text-center mt-8">
+            <p className="text-green-400 font-bold text-xl">محمد على</p>
+            <p className="text-gray-500 mt-2 text-sm tracking-widest">PK</p>
         </div>
       </div>
     </div>
