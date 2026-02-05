@@ -1,7 +1,7 @@
 export interface Bill {
   id: number;
   date: string;
-  amount: number;
+  amount: number | '';
 }
 
 export interface ReceiptData {

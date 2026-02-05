@@ -15,15 +15,15 @@ import Receipt from '@/components/receipt';
 export default function Home() {
   const { toast } = useToast();
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [weight, setWeight] = useState<number | ''>(0);
-  const [rate, setRate] = useState<number | ''>(0);
+  const [weight, setWeight] = useState<number | ''>('');
+  const [rate, setRate] = useState<number | ''>('');
   const [previousBills, setPreviousBills] = useState<Bill[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const addBill = () => {
-    setPreviousBills([...previousBills, { id: Date.now(), date: new Date().toISOString().split('T')[0], amount: 0 }]);
+    setPreviousBills([...previousBills, { id: Date.now(), date: new Date().toISOString().split('T')[0], amount: '' }]);
   };
 
   const updateBill = (id: number, field: keyof Omit<Bill, 'id'>, value: string | number) => {
@@ -186,7 +186,7 @@ export default function Home() {
                   {previousBills.map((bill) => (
                     <div key={bill.id} className="flex items-center gap-2">
                       <Input type="date" value={bill.date} onChange={e => updateBill(bill.id, 'date', e.target.value)} className="bg-gray-100 border-none w-1/3"/>
-                      <Input type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? 0 : parseInt(e.target.value, 10))} className="bg-gray-100 border-none flex-grow text-right"/>
+                      <Input type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none flex-grow text-right"/>
                       <Button variant="ghost" size="icon" onClick={() => removeBill(bill.id)} className="text-destructive h-8 w-8">
                         <Trash2 className="h-4 w-4"/>
                       </Button>
