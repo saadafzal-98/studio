@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo, useRef } from 'react';
@@ -61,27 +62,24 @@ export default function Home() {
         const canvas = await html2canvas(receiptRef.current, {
             scale: 3,
             useCORS: true,
-            backgroundColor: '#FFFFFF'
+            backgroundColor: '#000000'
         });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
 
-        // Use a more robust platform check
         if (Capacitor.getPlatform() !== 'web') {
             const base64Data = dataUrl.split(',')[1];
             
             const result = await Filesystem.writeFile({
                 path: `receipt-${Date.now()}.jpeg`,
                 data: base64Data,
-                directory: Directory.Cache, // Use Cache directory for temporary files
+                directory: Directory.Cache,
             });
 
-            // Use the 'files' array for more reliable sharing on native platforms
             await Share.share({
                 dialogTitle: 'رسید شیئر کریں',
                 files: [result.uri],
             });
         } else if (navigator.share) {
-            // Web platform: use Web Share API with blob
             const blob = await (await fetch(dataUrl)).blob();
             const file = new File([blob], 'receipt.jpg', { type: 'image/jpeg' });
             await navigator.share({
@@ -90,7 +88,6 @@ export default function Home() {
                 text: `تاریخ ${date} کی رسید`,
             });
         } else {
-            // Fallback for browsers that don't support Web Share API
             toast({
                 variant: "destructive",
                 title: "شیئرنگ ممکن نہیں",
@@ -99,7 +96,6 @@ export default function Home() {
         }
     } catch (error: any) {
         if (error.name === 'AbortError' || (error.message && error.message.includes('canceled'))) {
-            // User cancelled the share dialog
             console.log("Sharing cancelled by user.");
             return;
         }
@@ -209,8 +205,8 @@ export default function Home() {
                 <div className="space-y-2">
                   {previousBills.map((bill) => (
                     <div key={bill.id} className="flex items-center gap-2">
-                      <Input type="date" value={bill.date} onChange={e => updateBill(bill.id, 'date', e.target.value)} className="bg-gray-100 border-none w-1/3"/>
-                      <Input dir="ltr" type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none flex-grow text-center"/>
+                      <Input type="date" value={bill.date} onChange={e => updateBill(bill.id, 'date', e.target.value)} className="bg-gray-100 border-none flex-1"/>
+                      <Input dir="ltr" type="number" value={bill.amount} onChange={e => updateBill(bill.id, 'amount', e.target.value === '' ? '' : parseInt(e.target.value, 10))} className="bg-gray-100 border-none flex-1 text-center"/>
                       <Button variant="ghost" size="icon" onClick={() => removeBill(bill.id)} className="text-destructive h-8 w-8">
                         <Trash2 className="h-4 w-4"/>
                       </Button>
