@@ -9,79 +9,83 @@ interface ReceiptProps {
 }
 
 const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
-  const itemTotal = useMemo(() => data.weight * data.rate, [data.weight, data.rate]);
+  const itemTotal = useMemo(() => (Number(data.weight) || 0) * (Number(data.rate) || 0), [data.weight, data.rate]);
   const previousTotal = useMemo(() => data.previousBills.reduce((acc, bill) => acc + (Number(bill.amount) || 0), 0), [data.previousBills]);
   const finalTotal = useMemo(() => itemTotal + previousTotal, [itemTotal, previousTotal]);
 
   const formatDate = (dateString: string) => {
     try {
-      if (!dateString) return '---';
-      return new Date(dateString).toLocaleDateString('ur-PK-u-nu-latn');
+      if (!dateString) return '--/--/----';
+      const d = new Date(dateString);
+      const day = ('0' + d.getDate()).slice(-2);
+      const month = ('0' + (d.getMonth() + 1)).slice(-2);
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
     } catch (e) {
-      return '---';
+      return '--/--/----';
     }
   };
 
   return (
-    <div id="receipt-preview" ref={ref} className="w-[320px] bg-white text-black p-4 font-body text-sm rtl shadow-lg mx-auto">
-      <div className="text-center mb-4">
-        <h2 className="text-2xl font-bold font-headline">افضل پولٹری شاپ</h2>
-        <p className="text-xs">بسم اللہ الرحمن الرحیم</p>
-        <p className="mt-2">تاریخ: {formatDate(data.date)}</p>
-      </div>
-
-      <Separator className="my-2 border-dashed bg-black" />
-
-      <div className="space-y-1">
-        <div className="flex justify-between">
-          <span>مرغی کا وزن (کلو)</span>
-          <span>{data.weight.toLocaleString('ur-PK')}</span>
+    <div 
+        id="receipt-preview" 
+        ref={ref} 
+        className="bg-white text-black font-body w-full max-w-sm mx-auto rounded-t-3xl overflow-hidden"
+        dir="rtl"
+    >
+      <div className="p-5">
+        <div className="text-center mb-4">
+          <h2 className="text-3xl font-bold">میاں ریسٹورنٹ</h2>
+          <div className="inline-block bg-orange-100 text-orange-800 rounded-full px-4 py-1 my-3 text-xs font-semibold">
+              {formatDate(data.date)}
+          </div>
+          <p className="text-green-600 text-base">وَاللَّهُ خَيْرُ الرَّازِقِينَ</p>
+          <div className="mt-2 text-2xl flex justify-center items-center gap-3">
+              <span>🍗</span><span>🍷</span><span>🍽️</span><span>🐔</span><span>🥣</span>
+          </div>
         </div>
-        <div className="flex justify-between">
-          <span>ریٹ (فی کلو)</span>
-          <span>{data.rate.toLocaleString('ur-PK')}</span>
-        </div>
-        <div className="flex justify-between font-bold text-base">
-          <span>کُل قیمت</span>
-          <span>{itemTotal.toLocaleString('ur-PK')}</span>
-        </div>
-      </div>
 
-      <Separator className="my-2 border-dashed bg-black" />
-      
-      {data.previousBills.length > 0 && previousTotal > 0 && (
-        <>
-          <h3 className="text-center font-bold mb-1">پچھلا بقایاجات</h3>
-          <div className="space-y-1 text-xs">
-            {data.previousBills.map(bill => (
-              bill.amount > 0 && (
-                <div key={bill.id} className="flex justify-between">
-                  <span>تاریخ: {formatDate(bill.date)}</span>
-                  <span>رقم: {Number(bill.amount).toLocaleString('ur-PK')}</span>
+        <div className="space-y-4 text-sm">
+            <div className="bg-gray-100 rounded-xl p-3 space-y-3">
+                <div className="flex justify-between items-center">
+                    <span className="text-gray-600">چکن وزن</span>
+                    <span className="font-bold text-base">{(Number(data.weight) || 0).toLocaleString('ur-PK')}</span>
                 </div>
-              )
-            ))}
-          </div>
-          <div className="flex justify-between font-bold mt-1 text-base">
-            <span>پچھلا کُل</span>
-            <span>{previousTotal.toLocaleString('ur-PK')}</span>
-          </div>
-          <Separator className="my-2 border-dashed bg-black" />
-        </>
-      )}
+                 <Separator className="bg-gray-200 my-2"/>
+                <div className="flex justify-between items-center">
+                    <span className="text-gray-600">ریٹ لسٹ</span>
+                    <span className="font-bold text-base">{(Number(data.rate) || 0).toLocaleString('ur-PK')}</span>
+                </div>
+                <div className="bg-orange-500 text-white rounded-lg p-2 flex justify-between items-center mt-3">
+                    <span className="font-semibold text-xs">(ٹوٹل)</span>
+                    <span className="font-bold text-base">{itemTotal.toLocaleString('ur-PK')}</span>
+                </div>
+            </div>
 
-      <div className="text-center mt-4">
-        <p className="text-lg">گرینڈ ٹوٹل</p>
-        <p className="text-3xl font-bold font-headline">{finalTotal.toLocaleString('ur-PK')}</p>
-      </div>
-
-      <div className="mt-12 text-center">
-        <p className="tracking-[0.2em]">--------------------</p>
-        <p>دستخط</p>
+            <div>
+                <p className="text-right mb-1 text-xs text-gray-500">سابقہ رقم</p>
+                <div className="bg-gray-100 rounded-lg p-3 text-center">
+                    {previousTotal > 0 ? (
+                        <span className="font-bold text-xl">{previousTotal.toLocaleString('ur-PK')}</span>
+                    ) : (
+                        <p className="text-gray-400 text-xs">No previous balance</p>
+                    )}
+                </div>
+            </div>
+        </div>
       </div>
       
-      <div className="text-center text-gray-500 text-[10px] mt-8">
-        <p>Generated by Poultry Receipt App</p>
+      <div className="bg-[#0d1a2a] text-white p-5">
+        <div className="bg-[#1f2d3d] rounded-2xl p-4 text-center">
+            <p className="text-orange-400 font-bold text-sm">ٹوٹل بل</p>
+            <p className="text-4xl font-bold mt-1">{finalTotal.toLocaleString('ur-PK')}</p>
+        </div>
+
+        <div className="text-center mt-6">
+            <p className="text-green-400 font-bold text-lg">افضل پولٹری شاپ</p>
+            <p className="text-gray-500 mt-2 text-xs">PK</p>
+            <p className="text-2xl font-bold">محمد على</p>
+        </div>
       </div>
     </div>
   );
