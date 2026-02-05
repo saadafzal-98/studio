@@ -65,7 +65,7 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
              <Separator className="bg-gray-200"/>
             <div className="bg-gray-100 text-gray-800 rounded-lg p-2 flex justify-between items-center mt-2">
                 <span className="font-semibold">رقم</span>
-                <span className="font-bold text-lg">{itemTotal.toLocaleString('ur-PK')}</span>
+                <span className="font-bold text-lg">{Math.round(itemTotal).toLocaleString('ur-PK')}</span>
             </div>
         </div>
         
@@ -88,7 +88,7 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
       
         <div className="bg-slate-800 rounded-xl p-4 text-center text-white mt-4">
             <p className="font-bold text-md text-orange-400">ٹوٹل بل</p>
-            <p className="text-4xl font-bold mt-1">{finalTotal.toLocaleString('ur-PK')}</p>
+            <p className="text-4xl font-bold mt-1">{Math.round(finalTotal).toLocaleString('ur-PK')}</p>
         </div>
 
         <div className="text-center mt-6">
