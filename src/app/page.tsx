@@ -60,7 +60,7 @@ export default function Home() {
         const canvas = await html2canvas(receiptRef.current, { 
           scale: 3, 
           useCORS: true,
-          backgroundColor: '#0d1a2a'
+          backgroundColor: '#ffffff'
         });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
         
@@ -236,7 +236,7 @@ export default function Home() {
             <DialogTitle>رسید کا پیش نظارہ</DialogTitle>
           </DialogHeader>
           <Receipt data={receiptData} ref={receiptRef}/>
-          <DialogFooter className="px-6 pb-4 pt-0 sm:justify-center bg-[#070e17]">
+          <DialogFooter className="px-6 pb-4 pt-2 sm:justify-center bg-white rounded-b-2xl">
             <Button onClick={handleGenerateAndShare} className="w-full h-12 text-lg bg-green-500 hover:bg-green-600 text-white">
               <Share2 className="ml-2"/>
               شیئر کریں
