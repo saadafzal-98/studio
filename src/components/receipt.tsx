@@ -63,7 +63,7 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
                 <span className="font-semibold text-gray-900">{(Number(data.rate) || 0).toLocaleString('ur-PK')}</span>
             </div>
              <Separator className="bg-gray-200"/>
-            <div className="bg-orange-100 text-orange-800 rounded-lg p-2 flex justify-between items-center mt-2">
+            <div className="bg-gray-100 text-gray-800 rounded-lg p-2 flex justify-between items-center mt-2">
                 <span className="font-semibold">رقم</span>
                 <span className="font-bold text-lg">{itemTotal.toLocaleString('ur-PK')}</span>
             </div>
@@ -71,7 +71,6 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
         
         {showPreviousBills && (
           <div className="space-y-2">
-              <p className="text-right text-sm font-bold text-gray-500">سابقہ رقم</p>
               <div className="border rounded-lg p-3 space-y-2">
                   {displayedPreviousBills.map((bill) => (
                       <div key={bill.id} className="flex justify-between items-center text-sm">
@@ -79,15 +78,6 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ data }, ref) => {
                         <span className="font-semibold text-gray-800">{(Number(bill.amount) || 0).toLocaleString('ur-PK')}</span>
                       </div>
                   ))}
-                  {displayedPreviousBills.length > 1 && (
-                      <>
-                          <Separator className="my-2 bg-gray-200" />
-                          <div className="flex justify-between items-center font-bold text-md text-gray-900">
-                              <span>سابقہ ٹوٹل</span>
-                              <span>{previousTotal.toLocaleString('ur-PK')}</span>
-                          </div>
-                      </>
-                  )}
               </div>
           </div>
         )}
