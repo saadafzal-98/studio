@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ["'Noto Nastaliq Urdu'", 'serif'],
+        headline: ["'Noto Nastaliq Urdu'", 'serif'],
         code: ['monospace'],
       },
       colors: {
