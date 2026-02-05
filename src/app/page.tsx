@@ -172,7 +172,7 @@ export default function Home() {
                 </div>
               </div>
                <div className="bg-orange-100 text-orange-600 rounded-lg p-3 flex justify-between items-center">
-                  <span className="font-semibold text-sm">موجوده ٹوٹل</span>
+                  <span className="font-semibold text-sm">رقم</span>
                   <span className="font-bold text-lg">{itemTotal.toLocaleString()}</span>
                </div>
             </CardContent>
@@ -236,9 +236,9 @@ export default function Home() {
             <DialogTitle>رسید کا پیش نظارہ</DialogTitle>
           </DialogHeader>
           <Receipt data={receiptData} ref={receiptRef}/>
-          <DialogFooter className="px-6 pb-4 pt-2 sm:justify-center bg-white rounded-b-2xl">
-            <Button onClick={handleGenerateAndShare} className="w-full h-12 text-lg bg-green-500 hover:bg-green-600 text-white">
-              <Share2 className="ml-2"/>
+          <DialogFooter className="flex justify-center px-6 pb-4 pt-2 bg-white rounded-b-2xl">
+            <Button onClick={handleGenerateAndShare} className="rounded-full h-12 px-8 text-base font-bold bg-green-500 hover:bg-green-600 text-white shadow-lg transition-transform transform hover:scale-105">
+              <Share2 className="h-5 w-5"/>
               شیئر کریں
             </Button>
           </DialogFooter>
